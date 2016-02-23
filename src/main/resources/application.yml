@@ -1,0 +1,4 @@
+my_configuration:
+  serverConfiguration:
+    port: 80
+    server-name: Default server name
