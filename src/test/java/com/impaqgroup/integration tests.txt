@@ -1,0 +1,30 @@
+Initialize application context for spring controllers:
+    org.springframework.test.web.servlet.*
+    MockMvc
+    MockMvcBuilders
+
+Example code:
+    @Autowired
+    private WebApplicationContext wac;
+    private MockMvc mockMvc;
+
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    **************************************************************************
+
+Create stub for controller in application context:
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(new UserController(userRepositoryMock))
+                .build();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+Mocks:
+org.mockito.Mockito.*;
+org.springframework.test.web.servlet.*
+org.springframework.test.web.servlet.request.MockMvcRequestBuilders
