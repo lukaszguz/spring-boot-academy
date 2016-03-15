@@ -16,7 +16,7 @@ public class ReadConfiguration {
         this.environment = environment;
     }
 
-    @RequestMapping("/read-property/{propertyName}")
+    @RequestMapping("/read-properties/{propertyName}")
     public String readProperies(@PathVariable String propertyName) {
         return environment.getProperty(propertyName, "Not found");
     }
