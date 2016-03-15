@@ -3,14 +3,16 @@ package com.impaqgroup.controller;
 import com.impaqgroup.domain.User;
 import com.impaqgroup.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private UserRepository userRepository;
@@ -20,7 +22,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping("/all")
+    @RequestMapping(method = GET)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -35,13 +37,15 @@ public class UserController {
         userRepository.delete(userId);
     }
 
-    @RequestMapping(value = "/update", method = PUT)
+    @RequestMapping(method = PUT)
+    @ResponseStatus(NO_CONTENT)
     public void updateUser(@RequestBody User user) {
         user.setDetails("Updated user");
         userRepository.save(user);
     }
 
-    @RequestMapping(value = "/update", method = POST)
+    @RequestMapping(method = POST)
+    @ResponseStatus(CREATED)
     public void addNewUser(@RequestBody User user) {
         user.setDetails("New user");
         userRepository.save(user);

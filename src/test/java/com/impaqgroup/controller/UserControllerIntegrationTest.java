@@ -38,7 +38,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void shouldReturnUsers() throws Exception {
-        mockMvc.perform(get("/user/all").accept(APPLICATION_JSON))
+        mockMvc.perform(get("/users").accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.[*]", not(emptyArray()))

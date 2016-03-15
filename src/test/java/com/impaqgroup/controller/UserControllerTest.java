@@ -45,7 +45,7 @@ public class UserControllerTest {
         when(userRepositoryMock.findAll()).thenReturn(Collections.emptyList());
 
         // when
-        ResultActions result = mockMvc.perform(get("/user/all").accept(APPLICATION_JSON));
+        ResultActions result = mockMvc.perform(get("/users").accept(APPLICATION_JSON));
 
         // then
         result.andExpect(status().isOk())
@@ -63,7 +63,7 @@ public class UserControllerTest {
         when(userRepositoryMock.findAll()).thenReturn(users);
 
         // when
-        ResultActions result = mockMvc.perform(get("/user/all").accept(APPLICATION_JSON));
+        ResultActions result = mockMvc.perform(get("/users").accept(APPLICATION_JSON));
 
         // then
         result.andExpect(status().isOk())
@@ -77,7 +77,7 @@ public class UserControllerTest {
         Long userId = 1L;
 
         // when
-        ResultActions result = mockMvc.perform(delete("/user/{userId}", userId));
+        ResultActions result = mockMvc.perform(delete("/users/{userId}", userId));
 
         // then
         result.andExpect(status().isOk());
@@ -94,7 +94,7 @@ public class UserControllerTest {
         when(userRepositoryMock.findOne(userId)).thenReturn(user);
 
         // when
-        ResultActions result = mockMvc.perform(get("/user/{userId}", userId));
+        ResultActions result = mockMvc.perform(get("/users/{userId}", userId));
 
         // then
         result.andExpect(status().isOk())
@@ -110,10 +110,10 @@ public class UserControllerTest {
         String content = "{ \"name\": \"Tom\", \"pass\": \"pass\"\n}";
 
         // when
-        ResultActions result = mockMvc.perform(put("/user/update").content(content).contentType(APPLICATION_JSON));
+        ResultActions result = mockMvc.perform(put("/users").content(content).contentType(APPLICATION_JSON));
 
         // then
-        result.andExpect(status().isOk());
+        result.andExpect(status().isNoContent());
 
         verify(userRepositoryMock).save(argThat(
                 Matchers.<User>hasProperty("details", equalTo("Updated user"))));
@@ -125,10 +125,10 @@ public class UserControllerTest {
         String content = "{ \"id\": 1, \"name\": \"Tom\", \"pass\": \"pass\"\n}";
 
         // when
-        ResultActions result = mockMvc.perform(post("/user/update").content(content).contentType(APPLICATION_JSON));
+        ResultActions result = mockMvc.perform(post("/users").content(content).contentType(APPLICATION_JSON));
 
         // then
-        result.andExpect(status().isOk());
+        result.andExpect(status().isCreated());
 
         verify(userRepositoryMock).save(
                 argThat(
