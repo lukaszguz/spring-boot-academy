@@ -1,6 +1,7 @@
 package com.impaqgroup.controller;
 
 import com.impaqgroup.domain.User;
+import com.impaqgroup.domain.UserDto;
 import com.impaqgroup.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,11 @@ public class UserController {
         userRepository.delete(userId);
     }
 
-    @RequestMapping(method = PUT)
+    @RequestMapping(value = "/{userId}", method = PUT)
     @ResponseStatus(NO_CONTENT)
-    public void updateUser(@RequestBody User user) {
+    public void updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
+        User user = userRepository.findOne(userId);
+        user.setName(userDto.getName());
         user.setDetails("Updated user");
         userRepository.save(user);
     }

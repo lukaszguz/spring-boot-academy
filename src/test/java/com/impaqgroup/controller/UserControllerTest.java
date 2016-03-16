@@ -107,16 +107,29 @@ public class UserControllerTest {
     @Test
     public void shouldUpdateUser() throws Exception {
         // given
-        String content = "{ \"name\": \"Tom\", \"pass\": \"pass\"\n}";
+        // given
+        Long userId = 1L;
+        User user = new User("name1", "pass1", "detail1");
+        user.setId(userId);
+        when(userRepositoryMock.findOne(userId)).thenReturn(user);
+
+        String content = "{ \"name\": \"Tom\" }";
 
         // when
-        ResultActions result = mockMvc.perform(put("/users").content(content).contentType(APPLICATION_JSON));
+        ResultActions result = mockMvc.perform(put("/users/{userId}", userId)
+                .content(content)
+                .contentType(APPLICATION_JSON));
 
         // then
         result.andExpect(status().isNoContent());
 
-        verify(userRepositoryMock).save(argThat(
-                Matchers.<User>hasProperty("details", equalTo("Updated user"))));
+        verify(userRepositoryMock).save(
+                argThat(
+                    Matchers.<User>allOf(
+                            Matchers.<User>hasProperty("details", equalTo("Updated user")),
+                            Matchers.<User>hasProperty("name", equalTo("Tom"))
+                    )
+                ));
     }
 
     @Test
